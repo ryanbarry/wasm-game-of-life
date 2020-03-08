@@ -2,7 +2,7 @@
 
   <h1><code>wasm-game-of-life</code></h1>
 
-  <strong>Kick-started from this template for a Rust and WebAssembly project: <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a>.</strong>
+  <strong>Kick-started from this template for a Rust and WebAssembly project: <a href="https://github.com/rustwasm/wasm-pack-template">wasm-pack-template</a>.</strong>
 
   <h3>
     <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
