@@ -7,6 +7,8 @@
   <h3>
     <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
   </h3>
+  
+</div>
 
 ## About
 
