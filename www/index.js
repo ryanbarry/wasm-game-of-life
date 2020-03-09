@@ -72,6 +72,7 @@ const drawCells = () => {
     ctx.stroke();
 };
 
-//drawGrid();
+drawGrid();
 drawCells();
+drawGrid();
 requestAnimationFrame(renderLoop);
