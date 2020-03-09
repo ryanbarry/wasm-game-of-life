@@ -12,6 +12,7 @@ const ALIVE_COLOR = "#000000";
 const universe = Universe.new();
 const width = universe.width();
 const height = universe.height();
+let animationId = null;
 
 // canvas should include 1px border around all cells
 const canvas = document.getElementById("game-of-life-canvas");
@@ -26,7 +27,7 @@ const renderLoop = () => {
     //drawGrid();
     drawCells();
 
-    requestAnimationFrame(renderLoop);
+    animationId = requestAnimationFrame(renderLoop);
 };
 
 const drawGrid = () => {
@@ -81,7 +82,32 @@ const drawCells = () => {
     ctx.stroke();
 };
 
+
+const isPaused = () => {
+    return animationId === null;
+};
+
+const playPauseButton = document.getElementById("play-pause");
+playPauseButton.addEventListener("click", event => {
+    if (isPaused()) {
+        play();
+    } else {
+        pause();
+    }
+});
+
+const play = () => {
+    playPauseButton.textContent = "\u23F8";
+    renderLoop();
+};
+
+const pause = () => {
+    playPauseButton.textContent = "\u25B6";
+    cancelAnimationFrame(animationId);
+    animationId = null;
+};
+
 drawGrid();
 drawCells();
 drawGrid();
-requestAnimationFrame(renderLoop);
+play();
