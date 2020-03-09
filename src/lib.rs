@@ -76,11 +76,11 @@ impl Universe {
     }
 
     pub fn new() -> Universe {
-        const width: u32 = 256;
-        const height: u32 = 256;
+        const WIDTH: u32 = 256;
+        const HEIGHT: u32 = 256;
 
         // start with columns
-        /*let cells = (0..width * height)
+        /*let cells = (0..WIDTH * HEIGHT)
         .map(|i| {
             if i % 2 == 0 || i % 7 == 0 {
                 Cell::Alive
@@ -92,7 +92,7 @@ impl Universe {
 
         // start with a single LWSS
         /*
-        let mut cells: Vec<Cell> = (0..width * height).map(|_| Cell::Dead).collect();
+        let mut cells: Vec<Cell> = (0..WIDTH * HEIGHT).map(|_| Cell::Dead).collect();
         const LWSS: [[Cell; 5]; 4] = [
             [Cell::Dead, Cell::Alive, Cell::Dead, Cell::Dead, Cell::Alive],
             [Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead, Cell::Dead],
@@ -105,8 +105,8 @@ impl Universe {
                 Cell::Dead,
             ],
         ];
-        const LWSS_START_ROW: usize = (height / 2) as usize;
-        const LWSS_START_COL: usize = (width / 2) as usize;
+        const LWSS_START_ROW: usize = (HEIGHT / 2) as usize;
+        const LWSS_START_COL: usize = (WIDTH / 2) as usize;
         for (i, row) in LWSS.iter().enumerate() {
             for (j, lwss_cell) in row.iter().enumerate() {
                 let cells_x = LWSS_START_COL + j;
@@ -118,8 +118,8 @@ impl Universe {
          */
 
         // start with random
-        let cells = (0..width * height)
-            .map(|i| {
+        let cells = (0..WIDTH * HEIGHT)
+            .map(|_| {
                 if js_sys::Math::random() < 0.5 {
                     Cell::Alive
                 } else {
@@ -129,8 +129,8 @@ impl Universe {
             .collect();
 
         Universe {
-            width,
-            height,
+            width: WIDTH,
+            height: HEIGHT,
             cells,
         }
     }
