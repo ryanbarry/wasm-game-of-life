@@ -2,6 +2,8 @@ mod utils;
 
 use wasm_bindgen::prelude::*;
 
+extern crate js_sys;
+
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
 #[cfg(feature = "wee_alloc")]
@@ -77,6 +79,7 @@ impl Universe {
         const width: u32 = 256;
         const height: u32 = 256;
 
+        // start with columns
         /*let cells = (0..width * height)
         .map(|i| {
             if i % 2 == 0 || i % 7 == 0 {
@@ -86,6 +89,9 @@ impl Universe {
             }
         })
         .collect();*/
+
+        // start with a single LWSS
+        /*
         let mut cells: Vec<Cell> = (0..width * height).map(|_| Cell::Dead).collect();
         const LWSS: [[Cell; 5]; 4] = [
             [Cell::Dead, Cell::Alive, Cell::Dead, Cell::Dead, Cell::Alive],
@@ -109,6 +115,18 @@ impl Universe {
                 cells[idx] = *lwss_cell;
             }
         }
+         */
+
+        // start with random
+        let cells = (0..width * height)
+            .map(|i| {
+                if js_sys::Math::random() < 0.5 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            })
+            .collect();
 
         Universe {
             width,
