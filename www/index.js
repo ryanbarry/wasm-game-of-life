@@ -1,7 +1,7 @@
 import { Universe, Cell } from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 
-const CELL_SIZE   = 10; // px
+const CELL_SIZE   = 3; // px
 const GRID_COLOR  = "#CCCCCC";
 const DEAD_COLOR  = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
@@ -20,7 +20,7 @@ const ctx = canvas.getContext('2d');
 const renderLoop = () => {
     universe.tick();
 
-    drawGrid();
+    //drawGrid();
     drawCells();
 
     requestAnimationFrame(renderLoop);
@@ -72,6 +72,6 @@ const drawCells = () => {
     ctx.stroke();
 };
 
-drawGrid();
+//drawGrid();
 drawCells();
 requestAnimationFrame(renderLoop);
