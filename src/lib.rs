@@ -74,18 +74,41 @@ impl Universe {
     }
 
     pub fn new() -> Universe {
-        let width = 256;
-        let height = 256;
+        const width: u32 = 256;
+        const height: u32 = 256;
 
-        let cells = (0..width * height)
-            .map(|i| {
-                if i % 2 == 0 || i % 7 == 0 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-            })
-            .collect();
+        /*let cells = (0..width * height)
+        .map(|i| {
+            if i % 2 == 0 || i % 7 == 0 {
+                Cell::Alive
+            } else {
+                Cell::Dead
+            }
+        })
+        .collect();*/
+        let mut cells: Vec<Cell> = (0..width * height).map(|_| Cell::Dead).collect();
+        const LWSS: [[Cell; 5]; 4] = [
+            [Cell::Dead, Cell::Alive, Cell::Dead, Cell::Dead, Cell::Alive],
+            [Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead, Cell::Dead],
+            [Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead, Cell::Alive],
+            [
+                Cell::Alive,
+                Cell::Alive,
+                Cell::Alive,
+                Cell::Alive,
+                Cell::Dead,
+            ],
+        ];
+        const LWSS_START_ROW: usize = (height / 2) as usize;
+        const LWSS_START_COL: usize = (width / 2) as usize;
+        for (i, row) in LWSS.iter().enumerate() {
+            for (j, lwss_cell) in row.iter().enumerate() {
+                let cells_x = LWSS_START_COL + j;
+                let cells_y = LWSS_START_ROW + i;
+                let idx = cells_y * (width as usize) + cells_x;
+                cells[idx] = *lwss_cell;
+            }
+        }
 
         Universe {
             width,
