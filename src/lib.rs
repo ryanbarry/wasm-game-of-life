@@ -100,6 +100,17 @@ impl Universe {
         self.cells.toggle(idx);
     }
 
+    pub fn randomize_state(&mut self) {
+        let size = (self.width * self.height) as usize;
+        for i in 0..size {
+            self.cells.set(i, js_sys::Math::random() > 0.5);
+        }
+    }
+
+    pub fn clear(&mut self) {
+        self.cells.set_range(.., false);
+    }
+
     pub fn new() -> Universe {
         const WIDTH: u32 = 64;
         const HEIGHT: u32 = 64;
@@ -142,18 +153,15 @@ impl Universe {
         }
          */
 
-        // start with random
         let size = (WIDTH * HEIGHT) as usize;
-        let mut cells = FixedBitSet::with_capacity(size);
-        for i in 0..size {
-            cells.set(i, js_sys::Math::random() > 0.5);
-        }
-
-        Universe {
+        let cells = FixedBitSet::with_capacity(size);
+        let mut new_uni = Universe {
             width: WIDTH,
             height: HEIGHT,
             cells,
-        }
+        };
+        new_uni.randomize_state();
+        new_uni
     }
 
     pub fn render(&self) -> String {

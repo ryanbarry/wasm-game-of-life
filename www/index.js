@@ -4,7 +4,7 @@ import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 // enhance rust debugging
 set_panic_hook();
 
-const CELL_SIZE   = 3; // px
+const CELL_SIZE   = 8; // px
 const GRID_COLOR  = "#CCCCCC";
 const DEAD_COLOR  = "#FFFFFF";
 const ALIVE_COLOR = "#000000";
@@ -123,6 +123,20 @@ const pause = () => {
     cancelAnimationFrame(animationId);
     animationId = null;
 };
+
+const resetButton = document.getElementById("reset");
+resetButton.addEventListener("click", event => {
+    pause();
+    universe.randomize_state();
+    drawCells();
+});
+
+const clearButton = document.getElementById("clear");
+clearButton.addEventListener("click", event => {
+    pause();
+    universe.clear();
+    drawCells();
+});
 
 drawGrid();
 drawCells();
