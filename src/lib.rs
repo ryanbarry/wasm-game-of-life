@@ -2,6 +2,13 @@ mod utils;
 
 extern crate fixedbitset;
 extern crate js_sys;
+extern crate web_sys;
+
+macro_rules! log {
+    ( $( $t:tt )* ) => {
+        //web_sys::console::log_1(&format!( $( $t )* ).into());
+    };
+}
 
 use fixedbitset::FixedBitSet;
 use wasm_bindgen::prelude::*;
@@ -54,16 +61,34 @@ impl Universe {
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, col);
 
-                next.set(
-                    idx,
-                    match (cell, live_neighbors) {
-                        (true, x) if x < 2 => false,
-                        (true, 2) | (true, 3) => true,
-                        (true, x) if x > 3 => false,
-                        (false, 3) => true,
-                        (otherwise, _) => otherwise,
-                    },
+                log!(
+                    "cell[{}, {}] is initially {:?} and has {} live neighbors",
+                    row,
+                    col,
+                    cell,
+                    live_neighbors
                 );
+
+                let next_cell = match (cell, live_neighbors) {
+                    (true, x) if x < 2 => false,
+                    (true, 2) | (true, 3) => true,
+                    (true, x) if x > 3 => false,
+                    (false, 3) => true,
+                    (otherwise, _) => otherwise,
+                };
+
+                log!("    it becomes {:?}", next_cell);
+
+                if cell != next_cell {
+                    log!(
+                        "cell[{}, {}] is changing to {}",
+                        row,
+                        col,
+                        if next_cell { "alive" } else { "dead" }
+                    );
+                }
+
+                next.set(idx, next_cell);
             }
         }
 
@@ -71,8 +96,8 @@ impl Universe {
     }
 
     pub fn new() -> Universe {
-        const WIDTH: u32 = 256;
-        const HEIGHT: u32 = 256;
+        const WIDTH: u32 = 64;
+        const HEIGHT: u32 = 64;
 
         // start with columns
         /*let cells = (0..WIDTH * HEIGHT)
