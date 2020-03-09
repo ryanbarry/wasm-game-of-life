@@ -1,5 +1,8 @@
-import { Universe, Cell } from "wasm-game-of-life";
+import { set_panic_hook, Universe, Cell } from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
+
+// enhance rust debugging
+set_panic_hook();
 
 const CELL_SIZE   = 3; // px
 const GRID_COLOR  = "#CCCCCC";
