@@ -43,6 +43,8 @@ impl CellCoord {
 
 impl Universe {
     fn get_index(&self, row: u32, column: u32) -> usize {
+        let row = row % self.height;
+        let column = column % self.width;
         (row * self.width + column) as usize
     }
 
