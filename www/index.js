@@ -1,7 +1,7 @@
 import {
     set_panic_hook,
     Universe,
-    CellCoord
+    CellCoord as C
 } from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 
@@ -35,7 +35,7 @@ const toggleCellAtClientXY = (clientX, clientY) => {
     const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
 
-    universe.toggle_cell(new CellCoord(col, row));
+    universe.toggle_cell(new C(col, row));
 };
 
 const PRIMARY_MOUSE_BUTTON = 0;
