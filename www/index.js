@@ -1,4 +1,9 @@
-import { set_panic_hook, Universe, Cell } from "wasm-game-of-life";
+import {
+    set_panic_hook,
+    Universe,
+    CellCoord,
+    make_cell_coord
+} from "wasm-game-of-life";
 import { memory } from "wasm-game-of-life/wasm_game_of_life_bg";
 
 // enhance rust debugging
@@ -31,11 +36,17 @@ const toggleCellAtClientXY = (clientX, clientY) => {
     const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
 
-    universe.toggle_cell(row, col);
+    let coord = make_cell_coord(col, row);
+    universe.toggle_cell(coord);
 };
 
+const PRIMARY_MOUSE_BUTTON = 0;
+const SECONDARY_MOUSE_BUTTON = 2;
+let primaryMouseBtnDown = false;
 canvas.addEventListener("click", event => {
-    toggleCellAtClientXY(event.clientX, event.clientY);
+    if (event.button === PRIMARY_MOUSE_BUTTON) {
+        toggleCellAtClientXY(event.clientX, event.clientY);
+    }
     drawCells();
 });
 

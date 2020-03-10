@@ -26,6 +26,16 @@ pub struct Universe {
     cells: FixedBitSet,
 }
 
+#[wasm_bindgen]
+pub struct CellCoord {
+    x: u32,
+    y: u32,
+}
+#[wasm_bindgen]
+pub fn make_cell_coord(x: u32, y: u32) -> CellCoord {
+    CellCoord { x, y }
+}
+
 impl Universe {
     fn get_index(&self, row: u32, column: u32) -> usize {
         (row * self.width + column) as usize
@@ -95,8 +105,8 @@ impl Universe {
         self.cells = next;
     }
 
-    pub fn toggle_cell(&mut self, row: u32, column: u32) {
-        let idx = self.get_index(row, column);
+    pub fn toggle_cell(&mut self, coord: &CellCoord) {
+        let idx = self.get_index(coord.y, coord.x);
         self.cells.toggle(idx);
     }
 
