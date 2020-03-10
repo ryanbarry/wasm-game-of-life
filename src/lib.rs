@@ -34,8 +34,11 @@ pub struct CellCoord {
     y: u32,
 }
 #[wasm_bindgen]
-pub fn make_cell_coord(x: u32, y: u32) -> CellCoord {
-    CellCoord { x, y }
+impl CellCoord {
+    #[wasm_bindgen(constructor)]
+    pub fn new(x: u32, y: u32) -> CellCoord {
+        CellCoord { x, y }
+    }
 }
 
 impl Universe {
