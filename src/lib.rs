@@ -206,6 +206,14 @@ impl Universe {
     pub fn cells(&self) -> *const u32 {
         self.cells.as_slice().as_ptr()
     }
+
+    pub fn set_cells_by_coords(&mut self, cells: &[u32]) {
+        let mut celltuples = Vec::<(u32, u32)>::with_capacity(cells.len());
+        for c in cells.chunks_exact(2) {
+            celltuples.push((c[1], c[0]));
+        }
+        self.set_cells(&celltuples);
+    }
 }
 
 impl Universe {

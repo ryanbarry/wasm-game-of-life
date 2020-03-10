@@ -23,7 +23,7 @@ const canvas = document.getElementById("game-of-life-canvas");
 canvas.height = (CELL_SIZE + 1) * height + 1;
 canvas.width = (CELL_SIZE + 1) * width + 1;
 
-const toggleCellAtClientXY = (clientX, clientY) => {
+const clientXYtoColRow = (clientX, clientY) => {
     const boundingRect = canvas.getBoundingClientRect();
 
     const scaleX = canvas.width / boundingRect.width;
@@ -35,7 +35,20 @@ const toggleCellAtClientXY = (clientX, clientY) => {
     const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
 
+    return { col, row };
+};
+
+const toggleCellAtClientXY = (clientX, clientY) => {
+    let { col, row } = clientXYtoColRow(clientX, clientY);
     universe.toggle_cell(new C(col, row));
+};
+
+const makeSpaceShipAtClientXY = (clientX, clientY) => {
+    let { col, row } = clientXYtoColRow(clientX, clientY);
+
+    let ss = [0, 1, 1, 2, 2, 0, 2, 1, 2, 2];
+    ss = ss.map((xy, i) => {if (i%2===0) {return xy+col;} else {return xy+row;}});
+    universe.set_cells_by_coords(ss);
 };
 
 const PRIMARY_MOUSE_BUTTON = 0;
@@ -47,6 +60,13 @@ canvas.addEventListener("click", event => {
     }
     drawCells();
 });
+canvas.addEventListener("contextmenu", event => {
+    event.preventDefault();
+    if (event.button === SECONDARY_MOUSE_BUTTON) {
+        makeSpaceShipAtClientXY(event.clientX, event.clientY);
+    }
+    drawCells();
+}, {capture: true});
 
 const renderLoop = () => {
     universe.tick();
