@@ -43,12 +43,33 @@ const toggleCellAtClientXY = (clientX, clientY) => {
     universe.toggle_cell(new C(col, row));
 };
 
+const translateCoordListByXY = (l, x, y) => {
+    return l.map((xy, i) => {if (i%2===0) {return xy+x;} else {return xy+y;}});
+};
+
 const makeSpaceShipAtClientXY = (clientX, clientY) => {
     let { col, row } = clientXYtoColRow(clientX, clientY);
 
     let ss = [0, 1, 1, 2, 2, 0, 2, 1, 2, 2];
-    ss = ss.map((xy, i) => {if (i%2===0) {return xy+col;} else {return xy+row;}});
+    ss = translateCoordListByXY(ss, col, row);
     universe.set_cells_by_coords(ss);
+};
+
+const makePulsarAtClientXY = (clientX, clientY) => {
+    let { col, row } = clientXYtoColRow(clientX, clientY);
+
+    let pulsar = [3, 1, 4, 1, 5, 1, 9, 1, 10, 1, 11, 1,
+                  1, 3, 6, 3, 8, 3, 13, 3,
+                  1, 4, 6, 4, 8, 4, 13, 4,
+                  1, 5, 6, 5, 8, 5, 13, 5,
+                  3, 6, 4, 6, 5, 6, 9, 6, 10, 6, 11, 6,
+                  3, 8, 4, 8, 5, 8, 9, 8, 10, 8, 11, 8,
+                  1, 9, 6, 9, 8, 9, 13, 9,
+                  1, 10, 6, 10, 8, 10, 13, 10,
+                  1, 11, 6, 11, 8, 11, 13, 11,
+                  3, 13, 4, 13, 5, 13, 9, 13, 10, 13, 11, 13];
+    pulsar = translateCoordListByXY(pulsar, col, row);
+    universe.set_cells_by_coords(pulsar);
 };
 
 const PRIMARY_MOUSE_BUTTON = 0;
@@ -63,7 +84,11 @@ canvas.addEventListener("click", event => {
 canvas.addEventListener("contextmenu", event => {
     event.preventDefault();
     if (event.button === SECONDARY_MOUSE_BUTTON) {
-        makeSpaceShipAtClientXY(event.clientX, event.clientY);
+        if (event.shiftKey) {
+            makePulsarAtClientXY(event.clientX, event.clientY);
+        } else {
+            makeSpaceShipAtClientXY(event.clientX, event.clientY);
+        }
     }
     drawCells();
 }, {capture: true});
